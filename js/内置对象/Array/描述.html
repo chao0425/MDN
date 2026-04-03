@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array</title>
+</head>
+
+<body>
+    <script>
+        let years = []
+        console.log(years['2'] !== years['02'])
+        console.log(years['2'] === years[2])
+
+
+        console.log('-----------')
+        console.log('接下来看看splice方法')
+
+        let arr = ['one', 'two', 'three', 'four', 'five', 'six']
+
+        console.log('arr.splice(-2):', arr.splice(-2), 'arr:', arr)
+        
+        console.log('arr.splice(-1,\'four\', \'five\',\'six\')', arr.splice(-1, 1,'four', 'five', 'six'), 'arr:', arr)
+
+        for(let item of arr){
+            console.log(item)
+        }
+        for(let index in arr) {
+            console.log(index)
+        }
+
+
+        console.log('string'.split(''))
+        console.log(['s','t','r','i','n','g'].join(' '))
+    </script>
+</body>
+
+</html>

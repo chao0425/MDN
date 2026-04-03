@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function tryChangePtotoType() {
+
+        }
+        tryChangePtotoType.prototype.say = function () {
+            return '我是修改前'
+        }
+        var a = new tryChangePtotoType()
+        tryChangePtotoType.prototype.say = function () {
+            return '我是修改后'
+        }
+        var b = new tryChangePtotoType()
+        console.log(a.say())
+        console.log(b.say())
+
+        // 注意 我们prototype的属性改变了，即值改变了他的内容，改变了say，所以没啥问题，我们接下来试试改变prototype
+
+        function tryChangePtotoType2() {
+
+        }
+        tryChangePtotoType2.prototype = {
+            say: function () {
+                return '我是修改前'
+            }
+        }
+        var c = new tryChangePtotoType2()
+        tryChangePtotoType2.prototype = {
+            say: function () {
+                return '我是修改后'
+            }
+        }
+        var d = new tryChangePtotoType2()
+        console.log(c.say())
+        console.log(d.say())
+        // 我们这样就发现：前者仅仅替换的prototype的say属性，所以没问题，而后者直接将prototype给换了，所以出了问题
+
+
+        Object.getPrototypeOf(a).say = () => { return '我们通过得到原型修改原型属性此修改为a操作' }
+        Object.getPrototypeOf(b).say = () => { return '我们通过得到原型修改原型属性此修改为b操作(我们发现a操作修改后，b操作修改，结果二者都是根据b的修改，所以实例没有分家)' }
+
+        Object.getPrototypeOf(c).say = () => { return '我们通过得到原型修改原型属性此修改为c操作' }
+        Object.getPrototypeOf(d).say = () => { return '我们通过得到原型修改原型属性此修改为d操作' }
+
+        console.log(a.say())
+        console.log(b.say())
+
+        console.log(c.say())
+        console.log(d.say())
+
+        console.log(Array.prototype.__proto__===Object.prototype)
+
+    </script>
+</body>
+
+</html>

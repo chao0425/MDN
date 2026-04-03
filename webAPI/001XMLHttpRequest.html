@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = "text";
+
+        console.log("UNSENT", xhr.readyState); // readyState 为 0
+
+        xhr.open("GET", "http://jsonplaceholder.typicode.com/posts", true);
+        console.log("OPENED", xhr.readyState); // readyState 为 1
+
+        xhr.onprogress = function () {
+            console.log("LOADING", xhr.readyState, "为啥触发两次？,下载中；responseText 属性已经包含部分数据。所以触发两次，可能一次没下载完吧。。。"); // readyState 为 3、
+        };
+        // 这是个事件，state改变为某个值时触发
+
+        xhr.onload = function () {
+            console.log("DONE", xhr.readyState); // readyState 为 4
+            if (xhr.readyState === xhr.DONE) {
+                if (xhr.status === 200) {
+                    // console.log(xhr.response);
+                    // console.log(xhr.responseText);
+                    console.log('xhr.response == xhr.responseText,我们前文设置了xhr.responseType = "text"; :', xhr.response == xhr.responseText)
+                }
+            }
+            console.log('responseURL:',xhr.responseURL)
+            // 因为send是异步请求(open里面设置的)，所以我们不能将这段代码放下面，放在onload里面，就是等下载操作已完成，再进行这些
+        };
+        // 这是个事件，state改变为某个值时触发
+
+        xhr.send(null);
+        // console.log('responseURL:',xhr.responseURL)
+    </script>
+</body>
+
+</html>
