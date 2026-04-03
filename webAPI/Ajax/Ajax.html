@@ -21,17 +21,16 @@
 
         ajax('GET', 'http://jsonplaceholder.typicode.com/posts', function (i) {
             console.log(`我们拿到了外层成功的响应数据${i}`)
-            ajax('GET', 'http://jsonplaceholder.typicode.com/posts', function (i) {
+            // posts改为了post，找不到数据，应该是404错误
+            ajax('GET', 'http://jsonplaceholder.typicode.com/post', function (i) {
                 add()
                 console.log('----------------------------------接下来是内层的数据')
                 console.log(`我们拿到了内层成功的响应数据${i}`)
             }, function (i) {
-                console.log(i)
-                console.log('内层出了问题')
+                console.log(`内层出了问题，响应状态码为:${i}`)
             })
         }, function (i) {
-            console.log(i)
-            console.log('外层出了问题')
+            console.log('外层出了问题，响应状态码为:${i}')
         })
     </script>
 

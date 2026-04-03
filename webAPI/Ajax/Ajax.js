@@ -4,10 +4,9 @@ function ajax(method, url, solveCallback, rejectCallback) {
 
     xhr.onload = function () {
         if(xhr.status < 300 && xhr.status >= 200) {
-            console.log(xhr.status)
+            console.log(`响应成功，状态码为${xhr.status}`)
             solveCallback(xhr.response)
         } else {
-            console.log(xhr.status)
             rejectCallback(xhr.status)
         }
     }
