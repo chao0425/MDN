@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        window.fetch('http://jsonplaceholder.typicode.com/posts').then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP错误:${res.status}`)
+            }
+            console.log(res.status)
+            return res.json()
+        }).then(data => {
+            console.table(data)
+        })
+        // 这个和xhr里的onload的xhr.response、responseText很像
+        // 这个fetch我没写请求方式，默认是get了，请求返回一个Promise对象，Promise对象里面有Response，当我们.then时候，拿到了Response，如果链式.then那么参数就是上一个.then的返回值（一个新的Promise）
+
+        function tryPromise() {
+            return new Promise(resolve => {
+                console.log('定时器')
+                setTimeout(() => {
+                    resolve('返回值')
+                }, 1000)
+
+            })
+        }
+        tryPromise().then(data => console.log(data))
+
+        // 这个是定时器打印的1s后打印返回值
+
+        function getATimeOut(str, ans, ms) {
+            return new Promise(resolve => {
+                console.log(str)
+                setTimeout(() => {
+                    resolve(ans)
+                }, ms)
+            })
+        }
+
+        getATimeOut('先打印', '后打印', 3000).then(data => console.log(data))
+        // 这个是‘先打印’三秒后打印‘后打印’，和上面的例子实际是一样的
+
+        const sleep = ms => new Promise((resolve) => { setTimeout(() => resolve(), ms) })
+        // 这个是我们的睡眠函数，异步阻塞多少秒，由我们设置的
+        async function useSleep() {
+            await sleep(5000)
+            // sleep 5s
+            console.log('再睡三秒')
+            await sleep(3000)
+            console.log('三秒睡眠成功')
+        }
+        useSleep()
+    </script>
+</body>
+
+</html>
