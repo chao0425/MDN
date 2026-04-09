@@ -3,7 +3,7 @@
 > 1.npm install -g json-server
 2.在demo根目录下写个db.json(我不确定写在哪里，但是我这个例子就写在根目录下了)，db.json里面是json格式的数据，可以模拟多张表的存在
 3.npm install axios@1.14.0(这个是安装axios，这一节的主题，至于package.json自动配置了)
-4.json-server --watch db.json --port 5000我们选择守候在500端口
+4.json-server --watch db.json --port 5000我们选择守候在5000端口
 5.npm install -g http-server
 6.http-server
 7.html里面script src="./node_modules/axios/dist/axios.min.js"引入这个
