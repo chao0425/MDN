@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+    <link rel="icon" href="./favicon.ico" />
+</head>
+
+<body>
+
+    <div class="user">
+        <button onclick="showAllUsers()">点我查看所有用户</button>
+        <div id="users-element"></div>
+
+        <div>
+            <input type="text" placeholder="请添加用户" id="addArea">
+            <button onclick="addUserBtn()">点我添加用户</button>
+        </div>
+
+        <div>
+            <input type="text" placeholder="请输入修改前的用户" id="beforeUpdate">
+            <input type="text" placeholder="请输入修改后的用户" id="afterUpdate">
+            <button onclick="updateUserBtn()">修改用户</button>
+        </div>
+
+        <div>
+            <input type="text" placeholder="请输入希望删除的用户" id="wantDelete">
+            <button onclick="deleteUserBtn()">删除用户</button>
+        </div>
+    </div>
+
+
+    <script src="./node_modules/axios/dist/axios.min.js"></script>
+
+    <script>
+
+        axios.interceptors.request.use(function (config) {
+            // 在发送请求之前做些什么
+            console.log('我要发请求了')
+            return config;
+        }, function (error) {
+            // 对请求错误做些什么
+            console.log('请求出现错误')
+            if (error.response) {
+                console.log(error.response.status)
+            }
+            return Promise.reject(error);
+        });
+
+        const usersElement = document.getElementById('users-element')
+        const addArea = document.getElementById('addArea')
+        const beforeUpdate = document.getElementById('beforeUpdate')
+        const afterUpdate = document.getElementById('afterUpdate')
+        const wantDelete = document.getElementById('wantDelete')
+
+        const API_BASE = "http://localhost:5000/"
+
+        const getUser = () => axios.get(`${API_BASE}user`)
+        const addUser = (name) => axios.post(`${API_BASE}user`, { name })
+        const updateUser = (id, name) => axios.patch(`${API_BASE}user/${id}`, { name })
+        const deleteUser = (id) => axios.delete(`${API_BASE}user/${id}`).catch((error) => {
+            if (error.response) {
+                console.log(error.response.status)
+            }
+        })
+
+        // 因为发现多次用到id，所以把这个功能抽离开
+        async function getId(name) {
+            const { data } = await getUser()
+            for (item of data) {
+                if (item.name === name) {
+                    return item.id
+                }
+            }
+            return undefined
+        }
+
+        // 删除一个不存在的id，应该是资源没找到返回404
+        deleteUser(5425345345323)
+
+        // 查看所有用户
+        async function showAllUsers() {
+            // 一定要放里面，这个数据不是双向绑定的，而且不更新，每次我们要重新解构得到
+            const { data } = await getUser()
+            // getUser得到的是promise对象，我们只要其中的data，就是那个数组
+            usersElement.innerHTML = ""
+            for (item of data) {
+                let userItem = document.createElement('li')
+                // 生成的id太丑了，而且对于展示是黑盒，所以我们就不打印id了
+                let userMessage = document.createTextNode(`userName is: ${item.name}`)
+                userItem.appendChild(userMessage)
+                usersElement.appendChild(userItem)
+            }
+        }
+
+        // 从输入框中读取数据，并增加一条数据
+        async function addUserBtn() {
+            if (addArea.value.trim()) {
+                if (await getId(addArea.value.trim())) {
+                    alert('用户已存在')
+                } else {
+                    await addUser(addArea.value.trim())
+                    await showAllUsers()
+                }
+            } else {
+                alert('请正确输入')
+            }
+            addArea.value = ''
+        }
+
+
+        // 从输入框中读取输入前的数据以及输入后的数据
+        async function updateUserBtn() {
+            if (beforeUpdate.value.trim() && afterUpdate.value.trim()) {
+
+                let id = await getId(beforeUpdate.value.trim())
+
+                if (id !== undefined) {
+                    await updateUser(id, afterUpdate.value.trim())
+                    await showAllUsers()
+                } else {
+                    alert('好小子，无中生有是吧？')
+                }
+            } else {
+                alert('请正确填写')
+            }
+            beforeUpdate.value = ''
+            afterUpdate.value = ''
+        }
+
+        async function deleteUserBtn() {
+            if (wantDelete.value.trim()) {
+                let id = await getId(wantDelete.value.trim())
+                if (id !== undefined) {
+                    await deleteUser(id)
+                    await showAllUsers()
+                } else {
+                    alert('好小子，无中生有是吧？')
+                }
+            } else {
+                alert('请正确输入')
+            }
+            wantDelete.value = ''
+        }
+    </script>
+
+
+</body>
+
+</html>

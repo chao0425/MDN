@@ -1,0 +1,35 @@
+{
+  "user": [
+    {
+      "id": "2",
+      "name": "lisi"
+    },
+    {
+      "name": "3",
+      "id": "bYj42JvMc-U"
+    },
+    {
+      "name": "54675467",
+      "id": "dohczPQYxC4"
+    },
+    {
+      "name": "zhangsan",
+      "id": "PXIl8hZd0-0"
+    },
+    {
+      "name": "365454545454545454",
+      "id": "RoTLVQeISWg"
+    }
+  ],
+  "goods": [
+    {
+      "id": "1",
+      "type": "phone"
+    },
+    {
+      "id": "2",
+      "type": "pad"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
