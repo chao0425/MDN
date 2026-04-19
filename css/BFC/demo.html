@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFC</title>
+    <style>
+        section {
+            height: 150px;
+        }
+
+        .box {
+            background-color: rgb(224, 206, 247);
+            border: 5px solid rebeccapurple;
+        }
+
+        .box[style] {
+            background-color: aliceblue;
+            border: 5px solid steelblue;
+        }
+
+        .float {
+            float: left;
+            overflow: hidden;
+            /* resize:both 所必需的样式 */
+            resize: both;
+            margin-right: 25px;
+            width: 200px;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.75);
+            border: 1px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="box">
+            <div class="float">我是浮动的盒子！</div>
+            <p>我是容器内的内容。此时我们发现，浮动盖住了盒子，盒子没有识别到浮动(因为浮动都溢出格子了)，可是文本识别到浮动了(浮动没有覆盖文本)</p>
+        </div>
+    </section>
+    <section>
+        <div class="box" style="overflow:auto">
+            <div class="float">我是浮动的盒子！</div>
+            <p>我是 <code>overflow:auto</code> 容器内部的内容。</p>
+        </div>
+    </section>
+    <section>
+        <div class="box" style="display:flow-root">
+            <div class="float">我是浮动的盒子！</div>
+            <p>我是 <code>display:flow-root</code> 容器内部的内容。</p>
+        </div>
+    </section>
+
+
+    <section>
+        <div class="float">试试重新调整这个外部浮动元素的大小</div>
+        <div class="box">
+            <p>普通，这里我们浮动和这个盒子是并列关系，可见这个盒子被遮住了，没有识别到浮动</p>
+        </div>
+    </section>
+    <section>
+        <div class="float">试试重新调整这个外部浮动元素的大小</div>
+        <div class="box" style="display:flow-root">
+            <p><code>display:flow-root</code>此时我们发现，这次并列的盒子识别到了浮动</p>
+            <p></p>
+        </div>
+    </section>
+
+
+    外边距重叠我就简单在note里面说几句吧（margin塌陷）
+
+    <br>
+    我们bfc解决了浮动遮盖同级并列的盒子，可是解决不了position的fixed和absolute的遮盖同级盒子问题(因为这俩是彻底脱离文档流了)
+
+
+    <br>
+    试试position会不会高度塌陷
+    <div class="box">
+        <div style="position: absolute; background-color: aqua; width: 100px; height: 100px;"></div>
+        看一下是否高度塌陷
+    </div>
+
+
+    <div style="background: none; width: 200px;  position: absolute;">
+        当我们position盖住button时候，我们点击按钮就失效了，如果盖住一半，那么点击盖住的那半失效，没盖住的生效,现在我们知道不生效因为是盖住了，如果这个是background为none且没写字呢？</div>
+    <button onclick="clickBtn()">button</button>
+
+
+
+    <br><br><br><br><br><br><br><br><br><br>
+    我放了十个br标签，感觉html处的position简直是人神共愤，太碍事了
+
+
+    <div style="float: left; height: 100px; width: 100px; background-color: pink;">我们看看这个浮动</div>
+    <button style="display: block;" onclick="clickBtn()">按钮</button>
+    我们试试浮动是否会盖住我们的button <br>
+    结果是，即使button我们display成块儿了，可是浮动还是赶走了文字，顺便赶走了按钮。。。
+
+
+    <script>
+        function clickBtn() {
+            alert('点击了按钮')
+        }
+    </script>
+</body>
+
+</html>

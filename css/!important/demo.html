@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        a {
+            color: red !important;
+            background-color: yellow;
+            transition: all 2s linear;
+        }
+
+        a:hover {
+            color: black !important;
+            background-color: antiquewhite !important;
+        }
+
+
+        .myClass {
+            background-color: pink;
+        }
+
+        .myClass p {
+            font-size: 30px;
+            color: pink;
+        }
+
+        p {
+            color: blue  !important;
+        }
+
+        #id p {
+            color: red;
+        }
+    </style>
+</head>
+<a href="">看看a标签什么效果，发现如果给a一个hover，让他变颜色，可是与原本的a颜色冲突，那么如果a原本颜色是!important,而hover没有!important,则hover变色失效</a>
+<br>
+<div class="myClass" id="id">
+    <p style="color: black;">试试这个p标签，我们p标签在class里面，如果这个class内部标签p设置样式，p标签设置样式，如果p设置!important则按着p设定为准，如果没有，则按着class的内部p样式渲染。甚至我们内联样式也会被important压制</p>
+</div>
+
+!important 先压过所有非 !important；若都带!important，再比选择器优先级和书写顺序。
+
+
+<body>
+
+</body>
+
+</html>
